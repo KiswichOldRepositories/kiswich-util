@@ -87,7 +87,7 @@ public class GoogleOauth2 extends AbstractGoogleOauth2Auth implements IGoogleOau
      * @return 用户的userId
      */
     @Override
-    public String getUserId(String code) {
+    public String getUserId(String code) throws CodeErrorException {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(GOOGLE_API_HOST)
                 .addConverterFactory(JacksonConverterFactory.create())
@@ -100,9 +100,10 @@ public class GoogleOauth2 extends AbstractGoogleOauth2Auth implements IGoogleOau
         try {
             googleUserInf = userInfo.execute().body();
         } catch (IOException e) {
-            throw new CodeErrorException("???ba ga na");
+            throw new CodeErrorException("internet error");
         }
-        if (StringUtil.isBlank(googleUserInf.getUser_id())) throw new CodeErrorException("can't get user info");
+        if (googleUserInf == null || StringUtil.isBlank(googleUserInf.getUser_id()))
+            throw new CodeErrorException("can't get user info");
         return googleUserInf.getUser_id();
     }
 
@@ -115,7 +116,7 @@ public class GoogleOauth2 extends AbstractGoogleOauth2Auth implements IGoogleOau
      * @throws CodeErrorException
      */
     @Override
-    public GoogleToken getAccessToken(String code) throws CodeErrorException {
+    public GoogleToken getAccessToken(final String code) throws CodeErrorException {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(GOOGLE_API_HOST)
                 .addConverterFactory(JacksonConverterFactory.create())

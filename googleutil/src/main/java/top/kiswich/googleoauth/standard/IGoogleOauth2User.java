@@ -1,5 +1,7 @@
 package top.kiswich.googleoauth.standard;
 
+import top.kiswich.googleoauth.exception.CodeErrorException;
+
 /**
  * 对于这个接口而言，只需要从code直接获取userId(Oauth2服务商用户下的id)
  */
@@ -9,5 +11,5 @@ public interface IGoogleOauth2User extends IGoogleOauth2{
      * @param code google重定向传入的code
      * @return 用户的userId
      */
-    public String getUserId(String code);
+    public String getUserId(String code) throws CodeErrorException;
 }

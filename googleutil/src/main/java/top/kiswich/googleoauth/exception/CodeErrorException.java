@@ -3,7 +3,7 @@ package top.kiswich.googleoauth.exception;
 /**
  * 当获取token时，未获取到token，抛出的异常
  */
-public class CodeErrorException extends RuntimeException{
+public class CodeErrorException extends Exception{
 
     /**
      * Constructs a new exception with the specified detail message.  The
