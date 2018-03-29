@@ -204,7 +204,7 @@ public class ExportObjectExcel<T> {
     public CellStyle getColumnTopStyle(Workbook workbook, int i) {
 
         // 设置字体
-        Font font = workbook.createFont();
+        HSSFFont font = (HSSF) workbook.createFont();
         //设置字体大小
         font.setFontHeightInPoints((short) i);
         //字体加粗
@@ -214,19 +214,19 @@ public class ExportObjectExcel<T> {
         //设置样式;
         CellStyle style = workbook.createCellStyle();
         //设置底边框;
-        style.setBorderBottom(CellStyle.BORDER_THIN);
+        style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
         //设置底边框颜色;
         style.setBottomBorderColor(HSSFColor.BLACK.index);
         //设置左边框;
-        style.setBorderLeft(CellStyle.BORDER_THIN);
+        style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
         //设置左边框颜色;
         style.setLeftBorderColor(HSSFColor.BLACK.index);
         //设置右边框;
-        style.setBorderRight(CellStyle.BORDER_THIN);
+        style.setBorderRight(HSSFCellStyle.BORDER_THIN);
         //设置右边框颜色;
         style.setRightBorderColor(HSSFColor.BLACK.index);
         //设置顶边框;
-        style.setBorderTop(CellStyle.BORDER_THIN);
+        style.setBorderTop(HSSFCellStyle.BORDER_THIN);
         //设置顶边框颜色;
         style.setTopBorderColor(HSSFColor.BLACK.index);
         //在样式用应用设置的字体;
@@ -234,9 +234,9 @@ public class ExportObjectExcel<T> {
         //设置自动换行;
         style.setWrapText(false);
         //设置水平对齐的样式为居中对齐;
-        style.setAlignment(CellStyle.ALIGN_CENTER);
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
         //设置垂直对齐的样式为居中对齐;
-        style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
 
         return style;
 
@@ -247,7 +247,7 @@ public class ExportObjectExcel<T> {
      */
     public CellStyle getStyle(Workbook workbook) {
         // 设置字体
-        Font font = workbook.createFont();
+        HSSFFont font = (HSSF) workbook.createFont();
         //设置字体大小
         font.setFontHeightInPoints((short) DATA_FRONT_SIZE);
         //字体加粗
@@ -257,19 +257,19 @@ public class ExportObjectExcel<T> {
         //设置样式;
         CellStyle style = workbook.createCellStyle();
         //设置底边框;
-        style.setBorderBottom(CellStyle.BORDER_THIN);
+        style.setBorderBottom(HSSFCellStyle.BORDER_THIN);
         //设置底边框颜色;
         style.setBottomBorderColor(HSSFColor.BLACK.index);
         //设置左边框;
-        style.setBorderLeft(CellStyle.BORDER_THIN);
+        style.setBorderLeft(HSSFCellStyle.BORDER_THIN);
         //设置左边框颜色;
         style.setLeftBorderColor(HSSFColor.BLACK.index);
         //设置右边框;
-        style.setBorderRight(CellStyle.BORDER_THIN);
+        style.setBorderRight(HSSFCellStyle.BORDER_THIN);
         //设置右边框颜色;
         style.setRightBorderColor(HSSFColor.BLACK.index);
         //设置顶边框;
-        style.setBorderTop(CellStyle.BORDER_THIN);
+        style.setBorderTop(HSSFCellStyle.BORDER_THIN);
         //设置顶边框颜色;
         style.setTopBorderColor(HSSFColor.BLACK.index);
         //在样式用应用设置的字体;
@@ -277,9 +277,9 @@ public class ExportObjectExcel<T> {
         //设置自动换行;
         style.setWrapText(true);
         //设置水平对齐的样式为居中对齐;
-        style.setAlignment(CellStyle.ALIGN_CENTER);
+        style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
         //设置垂直对齐的样式为居中对齐;
-        style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
+        style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);
 
         return style;
 
