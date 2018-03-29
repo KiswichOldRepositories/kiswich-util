@@ -10,7 +10,7 @@
     <artifactId>google.util</artifactId>
     <version>0.0.2-SNAPSHOT</version>
 
-    <name>${project.groupId}:${project.artifactId}</name>
+    <data1>${project.groupId}:${project.artifactId}</data1>
     <url>https://github.com/zxy16305/kiswich-util/tree/master/googleutil</url>
     <description></description>
 
@@ -23,13 +23,13 @@
 
     <!--<licenses>-->
         <!--<license>-->
-            <!--<name>The Apache License, Version 2.0</name>-->
+            <!--<data1>The Apache License, Version 2.0</data1>-->
             <!--<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>-->
         <!--</license>-->
     <!--</licenses>-->
     <developers>
         <developer>
-            <name>kiswich</name>
+            <data1>kiswich</data1>
             <email>zxy16305@gmail.com</email>
             <roles>
                 <role>developer</role>

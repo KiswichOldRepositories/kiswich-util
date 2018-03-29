@@ -1,4 +1,4 @@
-package excelutil;
+package excelutil.exception;
 
 public class TypeErrorException extends Exception {
     /**

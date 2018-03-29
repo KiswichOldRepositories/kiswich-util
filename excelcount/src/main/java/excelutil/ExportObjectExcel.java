@@ -1,12 +1,18 @@
 package excelutil;
 
+import excelutil.Entity.ColumnParam;
+import excelutil.annotation.AutoWidth;
+import excelutil.annotation.ColumnName;
+import excelutil.annotation.TableName;
+import excelutil.exception.TypeErrorException;
+import excelutil.util.PoiStyleUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import sample.TestJavaBean;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -41,9 +47,9 @@ import java.util.regex.Pattern;
  * 4.优化代码结构 功能分类 打包 上传maven..23333
  */
 public class ExportObjectExcel<T> {
-    private final static float DATA_FRONT_SIZE = 10;
-    private final static float TITLE_FRONT_SIZE = 14;
-    private final static float TABLE_FRONT_SIZE = 20;
+    private final static float DATA_FONT_SIZE = 10;
+    private final static float TITLE_FONT_SIZE = 14;
+    private final static float TABLE_FONT_SIZE = 20;
     private final static float DATA_TABLE_HEIGHT = 20;
     private final static float TITLE_TABLE_HEIGHT = 35;
     private final static float TABLE_TABLE_HEIGHT = 65;
@@ -119,21 +125,22 @@ public class ExportObjectExcel<T> {
         Cell titleCell = row.createCell(0);
         row.setHeightInPoints(TABLE_TABLE_HEIGHT);
 
-        CellStyle columnTopStyle = this.getColumnTopStyle(workbook, (int) TABLE_FRONT_SIZE);
-        CellStyle style = this.getStyle(workbook);
+        CellStyle columnTopStyle = PoiStyleUtil.getColumnTopStyle(workbook, (int) TABLE_FONT_SIZE);
+        CellStyle style = PoiStyleUtil.getStyle(workbook);
 
         sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, size - 1));
         titleCell.setCellStyle(columnTopStyle);
         titleCell.setCellValue(this.tableHead);
 
         //3.填充列名
-        CellStyle columnTopStyle1 = this.getColumnTopStyle(workbook, (int) TITLE_FRONT_SIZE);
+        CellStyle columnTopStyle1 = PoiStyleUtil.getColumnTopStyle(workbook, (int) TITLE_FONT_SIZE);
         Row headRow = sheet.createRow(2);
         headRow.setHeightInPoints(TITLE_TABLE_HEIGHT);
         for (int i = 0; i < columnParams.size(); i++) {
             ColumnParam columnParam = columnParams.get(i);
             Cell headRowCell = headRow.createCell(i);
-            headRowCell.setCellType(Cell.CELL_TYPE_STRING);
+
+            headRowCell.setCellType(CellType.STRING);
             headRowCell.setCellValue(columnParam.getHeadName());
             headRowCell.setCellStyle(columnTopStyle1);
         }
@@ -162,7 +169,7 @@ public class ExportObjectExcel<T> {
                     }
                     if (count > rowMaxLine) {//比当前最大的行数还要大
                         float heightInPoints = sheetRow.getHeightInPoints();
-                        sheetRow.setHeightInPoints((count + 1) * (DATA_FRONT_SIZE));
+                        sheetRow.setHeightInPoints((count + 1) * (DATA_FONT_SIZE));
                         rowMaxLine = count;
                     }
                 }
@@ -198,174 +205,4 @@ public class ExportObjectExcel<T> {
         }
     }
 
-    /*
-     * 列头单元格样式
-     */
-    public CellStyle getColumnTopStyle(Workbook workbook, int i) {
-
-        // 设置字体
-        Font font = workbook.createFont();
-        //设置字体大小
-        font.setFontHeightInPoints((short) i);
-        //字体加粗
-        font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-        //设置字体名字
-        font.setFontName("宋体");
-        //设置样式;
-        CellStyle style = workbook.createCellStyle();
-        //设置底边框;
-        style.setBorderBottom(CellStyle.BORDER_THIN);
-        //设置底边框颜色;
-        style.setBottomBorderColor(HSSFColor.BLACK.index);
-        //设置左边框;
-        style.setBorderLeft(CellStyle.BORDER_THIN);
-        //设置左边框颜色;
-        style.setLeftBorderColor(HSSFColor.BLACK.index);
-        //设置右边框;
-        style.setBorderRight(CellStyle.BORDER_THIN);
-        //设置右边框颜色;
-        style.setRightBorderColor(HSSFColor.BLACK.index);
-        //设置顶边框;
-        style.setBorderTop(CellStyle.BORDER_THIN);
-        //设置顶边框颜色;
-        style.setTopBorderColor(HSSFColor.BLACK.index);
-        //在样式用应用设置的字体;
-        style.setFont(font);
-        //设置自动换行;
-        style.setWrapText(false);
-        //设置水平对齐的样式为居中对齐;
-        style.setAlignment(CellStyle.ALIGN_CENTER);
-        //设置垂直对齐的样式为居中对齐;
-        style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-
-        return style;
-
-    }
-
-    /*
-     * 列数据信息单元格样式
-     */
-    public CellStyle getStyle(Workbook workbook) {
-        // 设置字体
-        Font font = workbook.createFont();
-        //设置字体大小
-        font.setFontHeightInPoints((short) DATA_FRONT_SIZE);
-        //字体加粗
-        //font.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
-        //设置字体名字
-        font.setFontName("宋体");
-        //设置样式;
-        CellStyle style = workbook.createCellStyle();
-        //设置底边框;
-        style.setBorderBottom(CellStyle.BORDER_THIN);
-        //设置底边框颜色;
-        style.setBottomBorderColor(HSSFColor.BLACK.index);
-        //设置左边框;
-        style.setBorderLeft(CellStyle.BORDER_THIN);
-        //设置左边框颜色;
-        style.setLeftBorderColor(HSSFColor.BLACK.index);
-        //设置右边框;
-        style.setBorderRight(CellStyle.BORDER_THIN);
-        //设置右边框颜色;
-        style.setRightBorderColor(HSSFColor.BLACK.index);
-        //设置顶边框;
-        style.setBorderTop(CellStyle.BORDER_THIN);
-        //设置顶边框颜色;
-        style.setTopBorderColor(HSSFColor.BLACK.index);
-        //在样式用应用设置的字体;
-        style.setFont(font);
-        //设置自动换行;
-        style.setWrapText(true);
-        //设置水平对齐的样式为居中对齐;
-        style.setAlignment(CellStyle.ALIGN_CENTER);
-        //设置垂直对齐的样式为居中对齐;
-        style.setVerticalAlignment(CellStyle.VERTICAL_CENTER);
-
-        return style;
-
-    }
-
-    /**
-     * 保存
-     */
-    private class ColumnParam {
-        private String headName;
-        private int width;
-        //这个order只在初始化的时候有用
-        private Integer order;
-
-        public ColumnParam() {
-        }
-
-        public ColumnParam(String headName, int width) {
-            this.headName = headName;
-            this.width = width;
-        }
-
-        public ColumnParam(String headName, int width, Integer order) {
-            this.headName = headName;
-            this.width = width;
-            this.order = order;
-        }
-
-        public String getHeadName() {
-            return headName;
-        }
-
-        public void setHeadName(String headName) {
-            this.headName = headName;
-        }
-
-        public int getWidth() {
-            return width;
-        }
-
-        public void setWidth(int width) {
-            this.width = width;
-        }
-
-        public Integer getOrder() {
-            return order;
-        }
-
-        public void setOrder(Integer order) {
-            this.order = order;
-        }
-    }
-
-    //用于测试
-    public static void main(String[] a) {
-        ExportObjectExcel<TestDemo> excel = new ExportObjectExcel<>(TestDemo.class);
-        TestDemo testDemo = new TestDemo();
-        testDemo.setAge("aaa");
-        testDemo.setName("wwdddddddddddddddddd\nddddddddddw");
-        ArrayList<TestDemo> testDemos = new ArrayList<>();
-        testDemos.add(testDemo);
-        try {
-
-            Workbook workbook = excel.getWorkbook(testDemos);
-            File file = new File("E://newtext.xls");
-            if (!file.exists()) {
-                file.createNewFile();
-            } else {
-                file.delete();
-                file.createNewFile();
-            }
-            FileOutputStream fileOutputStream = new FileOutputStream(file);
-            workbook.write(fileOutputStream);
-
-
-        } catch (TypeErrorException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
 }
