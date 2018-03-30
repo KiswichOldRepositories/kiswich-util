@@ -13,4 +13,15 @@ public class StringUtil {
         return charSequence == null || charSequence.length() == 0;
     }
 
+    /**
+     * 判断是否为string类型
+     */
+    public static boolean isStringType(Class<?> returnType) {
+        return returnType.isInstance("");
+    }
+
+    public static boolean isIntType(Class<?> returnType) {
+        return returnType.isInstance(0) || returnType.isInstance(0L) || returnType.isInstance((short) 0);
+    }
+
 }

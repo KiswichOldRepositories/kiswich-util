@@ -3,15 +3,11 @@ package excelutil.annotation;
 import java.lang.annotation.*;
 
 /**
- * 使得列宽自动
- * 此时所有的列宽配置失效
- *
- * @since 0.0.1 现在自动配置此项
+ * 自动行高配置 默认开启
  */
-
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface AutoWidth {
+public @interface AutoHeight {
     boolean value() default true;
 }

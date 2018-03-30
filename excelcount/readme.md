@@ -27,8 +27,8 @@ excel.putExcelToHttpResponse(
 @AutoWidth
 public class TestJavaBean {
     private String data1;
-    private String data2;
-    private String data3;
+    private Integer data2;
+    private Date data3;
 
     //配置了一个表头为“title1”的列，他的顺序代号是5，越小排的越靠前
     @ColumnName(value = "title1", order = 5)
@@ -38,6 +38,31 @@ public class TestJavaBean {
 
     public TestJavaBean setData1(String data1) {
         this.data1 = data1;
+        return this;
+    }
+    
+    //配置了一个自动映射的列，当值为1时（string也支持映射），写入该列的值为data1
+    @ColumnName(value = "case", order = 6)
+    @MapFormats(map = {@MapFormat(name = "1", value = "data1"),
+              @MapFormat(name = "2", value = "data2")})
+    public Integer getData2(){
+        return data2;
+    }
+    
+    public TestJavaBean setData2(Integer data2){
+        this.data2 = data2;
+        return  this;
+    }
+    
+    //这里可以使用标准的时间表达式，也可以用DATE_FORMAT_TYPE 配置这里给出的几种常用表达式 默认为(yyyy-MM-dd HH:mm:ss)
+    @ColumnName(value = "date", order = 10)
+    @DateFormat(customFormatType = "yyyy")
+    public Date getData3(){
+        return this.data3;
+    }
+    
+    public TestJavaBean setData3(Date data3){
+        this.data3 = data3;
         return this;
     }
 }

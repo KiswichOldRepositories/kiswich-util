@@ -1,6 +1,8 @@
 package excelutil.annotation;
 
 
+import excelutil.constant.CellType;
+
 import java.lang.annotation.*;
 
 @Target({ElementType.METHOD})
