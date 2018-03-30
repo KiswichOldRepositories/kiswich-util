@@ -38,9 +38,9 @@ import java.util.regex.Pattern;
  * <p>
  * 想支持两种excel格式，但是poi提供的统一接口有一些特有的特征不能统一，暂时先支持xls
  * <p>
- * 新功能预订：1.支持整型/时间格式的输出
- * 2.支持boolean格式的输出，并且支持注解配置对应输出的字符串
- * 3.不确定生成的对象是否为线程安全
+ * 新功能预订：[OK]1.支持整型/时间格式的输出
+ * 『2OK』2.支持boolean格式的输出，并且支持注解配置对应输出的字符串
+ * 『应该是吧 目前来看 除了初始化，后面都没有向对象里写东西』3.不确定生成的对象是否为线程安全
  * 4.优化代码结构 功能分类 打包 上传maven..23333
  */
 public class ExportObjectExcel<T> {
@@ -217,7 +217,7 @@ public class ExportObjectExcel<T> {
                     case DATE:
                         cellText = TimeUtil.dateToString(cellCompont, columnParam.getDateFormat());
                         cell.setCellValue(cellText);
-//                        cell.setCellStyle(PoiStyleUtil.parseDateStyle(workbook,PoiStyleUtil.getStyle(workbook,(int) DATA_FONT_SIZE),columnParam.getDateFormat()));
+                        cell.setCellStyle(PoiStyleUtil.parseDateStyle(workbook, PoiStyleUtil.getStyle(workbook, (int) DATA_FONT_SIZE), columnParam.getDateFormat()));
                         break;
                     case INT:
                         cellText = String.valueOf(cellCompont);
@@ -249,7 +249,14 @@ public class ExportObjectExcel<T> {
 
         Date date4 = new Date();
         //5.自适应 (写死以提高性能)
-        //与poi自带的宽度自适应相比 速度提高了80倍,,,,,,,
+        //与poi自带的宽度自适应相比 速度提高了80倍,,,,,,,（家里测150倍）
+        // 如demo中的数据 自适应时间对比(930 /6）。。。对于一个工程而言 这应该是可以忽略写死带来的副作用了
+//        if(this.isAutoWidth){
+//            for(int columnIndex = 0; columnIndex < columnParams.size();columnIndex++){
+//                sheet.autoSizeColumn(columnIndex);
+//            }
+//        }
+
         if (this.isAutoWidth) {
             for (int columnIndex = 0; columnIndex < columnParams.size(); columnIndex++) {
                 int columnWidth = sheet.getColumnWidth(columnIndex) / 256;
