@@ -140,7 +140,7 @@ public class ExportObjectExcel<T> {
     }
 
     public Workbook getWorkbook(Collection<T> ts) throws TypeErrorException, InvocationTargetException, IllegalAccessException {
-//        Date date = new Date();
+        Date date = new Date();
         //1.创建对象
         Workbook workbook;
         switch (excelType) {
@@ -155,7 +155,7 @@ public class ExportObjectExcel<T> {
         }
         Sheet sheet = workbook.createSheet(this.tableHead);
 
-//        Date date1 = new Date();
+        Date date1 = new Date();
         //2.填充表名
         int size = columnParams.size();
         Row row = sheet.createRow(0);
@@ -168,7 +168,7 @@ public class ExportObjectExcel<T> {
         titleCell.setCellStyle(columnTopStyle);
         titleCell.setCellValue(this.tableHead);
 
-//        Date date2 = new Date();
+        Date date2 = new Date();
         //3.填充列名
         CellStyle columnTopStyle1 = PoiStyleUtil.getColumnTopStyle(workbook, (int) TITLE_FONT_SIZE);
         Row headRow = sheet.createRow(2);
@@ -184,7 +184,7 @@ public class ExportObjectExcel<T> {
 
         CellStyle style = PoiStyleUtil.getStyle(workbook, (int) DATA_FONT_SIZE);
 
-//        Date date3 = new Date();
+        Date date3 = new Date();
         //4.循环填充数据
         Iterator<T> iterator = ts.iterator();
         int index = 0;
@@ -247,7 +247,7 @@ public class ExportObjectExcel<T> {
             index++;
         }
 
-//        Date date4 = new Date();
+        Date date4 = new Date();
         //5.自适应 (写死以提高性能)
         //与poi自带的宽度自适应相比 速度提高了80倍,,,,,,,
         if (this.isAutoWidth) {
@@ -259,7 +259,7 @@ public class ExportObjectExcel<T> {
                     if (titleRow.getCell(columnIndex) != null) {
                         Cell currentCell = titleRow.getCell(columnIndex);
                         String text = currentCell.toString();
-                        int length = text.length() * 2;
+                        int length = StringUtil.getWidth(text) * 2;
                         if (columnWidth < length) {
                             columnWidth = length;
                         }
@@ -274,7 +274,7 @@ public class ExportObjectExcel<T> {
                             String texts = currentCell.toString();
 
                             for (String text : texts.split("\n")) {
-                                int length = text.length();
+                                int length = StringUtil.getWidth(text);
                                 if (columnWidth < length) {
                                     columnWidth = length;
                                 }
@@ -286,12 +286,12 @@ public class ExportObjectExcel<T> {
             }
         }
 
-//        Date date5 = new Date();
-//        System.out.println(date1.getTime() - date.getTime());
-//        System.out.println(date2.getTime() - date1.getTime());
-//        System.out.println(date3.getTime() - date2.getTime());
-//        System.out.println(date4.getTime() - date3.getTime());
-//        System.out.println(date5.getTime() - date4.getTime());
+        Date date5 = new Date();
+        System.out.println(date1.getTime() - date.getTime());
+        System.out.println(date2.getTime() - date1.getTime());
+        System.out.println(date3.getTime() - date2.getTime());
+        System.out.println(date4.getTime() - date3.getTime());
+        System.out.println(date5.getTime() - date4.getTime());
         return workbook;
     }
 

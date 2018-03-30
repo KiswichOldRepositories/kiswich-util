@@ -94,7 +94,7 @@ public class TestJavaBean {
             add(new TestJavaBean().setData1("aaa").setData2("bbbbbbbbbbbbb\nccccccccccccc").setData3("sssss\nsss\nss").setData4(1).setDate(new Date()));
             add(new TestJavaBean().setData1("aaa").setData2("bbbbbbbbbbbbb\nccccccccccccc").setData3("sssss\nsss\nss").setData4(2).setDate(new Date()));
             add(new TestJavaBean().setData1("aaa").setData2("bbbbbbbbbbbbb\nccccccccccccc").setData3("sssss\nsss\nss").setData4(1).setDate(new Date()));
-            add(new TestJavaBean().setData1("aaa").setData2("bbbbbbbbbbbbb\ncccccccccccccccccddddddcccccccc").setData3("sssss\nsss\nss").setData4(2).setDate(new Date()));
+            add(new TestJavaBean().setData1("aaa").setData2("bbbbbbbbbbbbb\nccccc找哦品尼高圣大非省的认为俄双方都是ccc中文c中文dddddcccccccc").setData3("sssss\nsss\nss").setData4(2).setDate(new Date()));
             add(new TestJavaBean().setData1("aaa").setData2("bbbbbbbbbbbbb\nccccccccccccc").setData3("sssss\nsss\nss").setData4(1).setDate(new Date()));
             add(new TestJavaBean().setData1("aaa").setData2("bbbbbbbbbbbbb\nccccccccccccc").setData3("sssss\nsss\nss").setData4(2).setDate(new Date()));
             add(new TestJavaBean().setData1("aaa").setData2("bbbbbbbbbbbbb\nccccccccccccc").setData3("sssss\nsss\nss").setData4(1).setDate(new Date()));
@@ -460,7 +460,7 @@ public class TestJavaBean {
         }};
         try {
             Workbook workbook = excel.getWorkbook(testJavaBeans);
-            File file = new File("E://newtext.xls");
+            File file = new File("D://newtext.xls");
             if (!file.exists()) {
                 file.createNewFile();
             } else {
