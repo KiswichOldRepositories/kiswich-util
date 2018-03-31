@@ -43,7 +43,7 @@ import java.util.regex.Pattern;
  * 『应该是吧 目前来看 除了初始化，后面都没有向对象里写东西』3.不确定生成的对象是否为线程安全
  * 4.优化代码结构 功能分类 打包 上传maven..23333
  */
-public class ExportObjectExcel<T> {
+public class ExcelExporter<T> {
     //和下面的行高适配和列宽适配略有耦合
     private final static float DATA_FONT_SIZE = 10;
     private final static float TITLE_FONT_SIZE = 14;
@@ -64,7 +64,7 @@ public class ExportObjectExcel<T> {
     private boolean isAutoHeight = false;
     private ExcelType excelType;
 
-    public ExportObjectExcel(Class<T> objectType) throws TypeErrorException {
+    public ExcelExporter(Class<T> objectType) throws TypeErrorException {
         this.objectType = objectType;
         this.columnParams = new ArrayList<>();
         this.methods = new ArrayList<>();

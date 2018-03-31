@@ -9,7 +9,7 @@
     
 ```
 //初始化
-ExportObjectExcel<FooJavaBean> excel = new ExportObjectExcel<>(FooJavaBean.class);
+ExcelExporter<FooJavaBean> excel = new ExcelExporter<>(FooJavaBean.class);
 //使用
 List<FooJavaBean> beans = ...;
 excel.putExcelToHttpResponse(
@@ -23,7 +23,7 @@ excel.putExcelToHttpResponse(
 ```java
 //配置了一个表名为“Head”的清单(第一行为Head,同时礼貌性合并第二行)
 @TableName("Head")
-//开启宽度和高度自动适配，代价就是稍微会慢一点
+//现在在@tablename上已经默认开启了自动高度和自动宽度的注解
 @AutoWidth
 public class TestJavaBean {
     private String data1;
@@ -56,7 +56,7 @@ public class TestJavaBean {
     
     //这里可以使用标准的时间表达式，也可以用DATE_FORMAT_TYPE 配置这里给出的几种常用表达式 默认为(yyyy-MM-dd HH:mm:ss)
     @ColumnName(value = "date", order = 10)
-    @DateFormat(customFormatType = "yyyy")
+    @DateFormat(customFormatType = "yyyy-MM-dd")
     public Date getData3(){
         return this.data3;
     }
@@ -74,11 +74,12 @@ public class TestJavaBean {
 `@ColumnName` 建议配在get方法上，之后可能做这方面的验证。配在这是为了调用方法
 后可以直接取到数据。里面有个`width`的参数，是没用的。order的灵感来自于spring的
 ioc 2333
-`@AutoWidth` 注解能让宽度适配，同时高度也适配。他会匹配字符串中的"\n",作为新的
-一行
+`@AutoWidth` 注解能让宽度适配，匹配每列的最大长度，作为宽度。
+`@AutoHeight` 让高度适配。他会匹配字符串中的"\n",作为新的一行
 
-实际使用中，往往会把数据类型的转换都写到这个bean的构造器里面。因为现阶段类本身只支持
-`String` 类型的数据。
+这两个注解都通过了一定程度的优化（写死）提高了部分性能，现在是初始化占了比较大的时间。
+
+实际使用中，往往会把复杂数据类型的转换都写到这个bean的构造器里面。
 
 为了兼容一些老项目，没有使用java7以上的特有语法。
 

@@ -1,6 +1,6 @@
 package sample;
 
-import excelutil.ExportObjectExcel;
+import excelutil.ExcelExporter;
 import excelutil.annotation.*;
 import excelutil.exception.TypeErrorException;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -80,9 +80,9 @@ public class TestJavaBean {
     public void testDemo() {
         Date date = new Date();
 
-        ExportObjectExcel<TestJavaBean> excel = null;
+        ExcelExporter<TestJavaBean> excel = null;
         try {
-            excel = new ExportObjectExcel<>(TestJavaBean.class);
+            excel = new ExcelExporter<>(TestJavaBean.class);
         } catch (TypeErrorException e) {
             e.printStackTrace();
         }
