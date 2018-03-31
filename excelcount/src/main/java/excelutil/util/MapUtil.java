@@ -11,7 +11,13 @@ import java.util.Map;
  */
 public class MapUtil {
 
-    //将注解的内容抽取到map对象里
+
+    /**
+     * 将注解的内容抽取到map对象里
+     *
+     * @param mapFormats
+     * @return
+     */
     public static Map<String, String> parseMap(MapFormats mapFormats) {
         HashMap<String, String> hashMap = new HashMap<>();
         if (mapFormats != null) {

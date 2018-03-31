@@ -88,6 +88,8 @@ public class ExcelExporter<T> {
      * 按method注解中的 {@link ColumnName} 的 order值，从小到大进行插入排序，如果有相等的，就放在后面
      *
      * @param method
+     * @param columnName
+     * @throws TypeErrorException
      */
     private void addMethodInOrder(Method method, ColumnName columnName) throws TypeErrorException {
         int width = columnName.width();
@@ -107,6 +109,9 @@ public class ExcelExporter<T> {
 
     /**
      * 检查参数映射，并构造参数实体类
+     * @param method
+     * @return
+     * @throws TypeErrorException
      */
     private ColumnParam checkAndSetParam(Method method) throws TypeErrorException {
         //确定参数类型
@@ -305,6 +310,12 @@ public class ExcelExporter<T> {
 
     /**
      * 将excel传到response里
+     * @param ts
+     * @param response
+     * @param fileName
+     * @throws TypeErrorException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
      */
     public void putExcelToHttpResponse(Collection<T> ts, HttpServletResponse response, String fileName) throws TypeErrorException, IllegalAccessException, InvocationTargetException {
 
@@ -321,6 +332,12 @@ public class ExcelExporter<T> {
 
     /**
      * 将excel传到某个流里,默认是不会关闭流的
+     * @param ts
+     * @param outputStream
+     * @throws IOException
+     * @throws TypeErrorException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
      */
     public void putExcelToOutputstream(Collection<T> ts, OutputStream outputStream) throws IOException, TypeErrorException, IllegalAccessException, InvocationTargetException {
         putExcelToOutputstream(ts, outputStream, false);
@@ -337,6 +354,12 @@ public class ExcelExporter<T> {
 
     /**
      * 将excel写入文件
+     * @param ts
+     * @param fileName
+     * @throws IOException
+     * @throws TypeErrorException
+     * @throws IllegalAccessException
+     * @throws InvocationTargetException
      */
     public void putExcelToOutputstream(Collection<T> ts, String fileName) throws IOException, TypeErrorException, IllegalAccessException, InvocationTargetException {
         File file = new File(fileName);

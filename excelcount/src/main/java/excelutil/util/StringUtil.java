@@ -17,6 +17,8 @@ public class StringUtil {
 
     /**
      * 判断是否为string类型
+     * @param returnType
+     * @return
      */
     public static boolean isStringType(Class<?> returnType) {
         return returnType.isInstance("");
@@ -28,7 +30,6 @@ public class StringUtil {
 
     /**
      * 获取字符串对应的长度
-     *
      * @param string
      * @return
      */
@@ -42,7 +43,9 @@ public class StringUtil {
 
     /**
      * 获取单个字符的宽度
-     * 现在只区分出中文 即不支持i18
+     * 现在只区分出中文 即不支持i18n
+     * @param code
+     * @return
      */
     public static int getWidthUnicode(int code) {
         if (code >= 0x4e00 && code <= 0x9fa5) return 2;

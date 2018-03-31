@@ -7,9 +7,6 @@ import org.junit.Test;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
-/**
- * @
- */
 public class TestReflect {
 
     @Test

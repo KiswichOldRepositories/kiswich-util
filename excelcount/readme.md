@@ -6,7 +6,27 @@
    
    
 ### QUICk START 
+引入构建
+
+maven
+```xml
+<dependency>
+    <groupId>top.kiswich</groupId>
+    <artifactId>excel-count</artifactId>
+    <version>1.0.0-RELEASE</version>
+</dependency>
+```
     
+gradle
+```
+dependencies {
+    compile 'top.kiswich:excel-count:1.0.0-RELEASE'
+}
+```
+
+
+初始化
+
 ```
 //初始化
 ExcelExporter<FooJavaBean> excel = new ExcelExporter<>(FooJavaBean.class);

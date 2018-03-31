@@ -55,6 +55,8 @@ public class TimeUtil {
     /**
      * 判断是否为时间类型
      * 目前支持Date和Timestamp
+     * @param type
+     * @return
      */
     public static boolean isDateType(Class<?> type) {
         return type.isInstance(date) || type.isInstance(timestamp);
