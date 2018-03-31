@@ -13,7 +13,7 @@ public @interface ColumnName {
     String value();
 
     //列宽
-    int width() default 80;
+    int width() default 0;
 
     //列的顺序 按从小到大排序
     int order() default Integer.MAX_VALUE;

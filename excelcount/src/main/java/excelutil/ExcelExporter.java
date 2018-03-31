@@ -92,41 +92,45 @@ public class ExcelExporter<T> {
      * @throws TypeErrorException
      */
     private void addMethodInOrder(Method method, ColumnName columnName) throws TypeErrorException {
-        int width = columnName.width();
+
         int order = columnName.order();
         String headName = columnName.value();
         for (int i = 0; i < columnParams.size(); i++) {
             ColumnParam columnParam = columnParams.get(i);
             if (columnParam.getOrder() > order) {
-                this.columnParams.add(i, checkAndSetParam(method).setHeadName(headName).setWidth(width).setOrder(order));
+                this.columnParams.add(i, checkAndSetParam(method, columnName).setHeadName(headName).setOrder(order));
                 methods.add(i, method);
                 return;
             }
         }
-        this.columnParams.add(checkAndSetParam(method).setHeadName(headName).setWidth(width).setOrder(order));
+        this.columnParams.add(checkAndSetParam(method, columnName).setHeadName(headName).setOrder(order));
         methods.add(method);
     }
 
     /**
      * 检查参数映射，并构造参数实体类
+     *
      * @param method
      * @return
      * @throws TypeErrorException
      */
-    private ColumnParam checkAndSetParam(Method method) throws TypeErrorException {
+    private ColumnParam checkAndSetParam(Method method, ColumnName columnName) throws TypeErrorException {
+        int width = columnName.width();
         //确定参数类型
         Class<?> returnType = method.getReturnType();
         if (StringUtil.isStringType(returnType)) {
             ColumnParam<String> stringColumnParam = new ColumnParam<>();
             //处理映射
             stringColumnParam.setMap(MapUtil.parseMap(method.getAnnotation(MapFormats.class)));
-            stringColumnParam.setCellType(excelutil.constant.CellType.STRING);
+            stringColumnParam.setCellType(excelutil.constant.CellType.STRING)
+                    .setWidth(width);
             return stringColumnParam;
         }
         if (StringUtil.isIntType(returnType)) {
             ColumnParam<Integer> integerColumnParam = new ColumnParam<>();
             integerColumnParam.setMap(MapUtil.parseMap(method.getAnnotation(MapFormats.class)));
-            integerColumnParam.setCellType(excelutil.constant.CellType.INT);
+            integerColumnParam.setCellType(excelutil.constant.CellType.INT)
+                    .setWidth(width);
             return integerColumnParam;
         }
         if (TimeUtil.isDateType(returnType)) {
@@ -138,7 +142,11 @@ public class ExcelExporter<T> {
                 dateColumnParam.setDateFormat(
                         dateFormat.customFormatType().equals("") ? dateFormat.DATE_FORMAT_TYPE().getDateFormatString() : dateFormat.customFormatType());
             }
-            dateColumnParam.setCellType(excelutil.constant.CellType.DATE);
+            dateColumnParam.setCellType(excelutil.constant.CellType.DATE)
+                    .setWidth(width);
+            //时间属性的宽度是可以通过表达式定下来的
+            if (width == 0) dateColumnParam.setWidth(StringUtil.getWidth(dateColumnParam.getDateFormat()));
+
             return dateColumnParam;
         }
         throw new TypeErrorException("暂不支持 " + returnType.toString() + " 类型");
@@ -264,6 +272,8 @@ public class ExcelExporter<T> {
 
         if (this.isAutoWidth) {
             for (int columnIndex = 0; columnIndex < columnParams.size(); columnIndex++) {
+                ColumnParam columnParam = columnParams.get(columnIndex);
+
                 int columnWidth = sheet.getColumnWidth(columnIndex) / 256;
                 //在某些列较短的情况下，可能出现标题被挡住的情况，此时增大标题的权重（简称写死以提高性能）
                 Row titleRow = sheet.getRow(2);
@@ -278,23 +288,28 @@ public class ExcelExporter<T> {
                     }
                 }
 
-                for (int rowNum = 3; rowNum < sheet.getLastRowNum() + 1; rowNum++) {
-                    Row currentRow = sheet.getRow(rowNum);
-                    if (currentRow != null) {
-                        if (currentRow.getCell(columnIndex) != null) {
-                            Cell currentCell = currentRow.getCell(columnIndex);
-                            String texts = currentCell.toString();
+                if (columnParam.getWidth() == 0) {
+                    for (int rowNum = 3; rowNum < sheet.getLastRowNum() + 1; rowNum++) {
+                        Row currentRow = sheet.getRow(rowNum);
+                        if (currentRow != null) {
+                            if (currentRow.getCell(columnIndex) != null) {
+                                Cell currentCell = currentRow.getCell(columnIndex);
+                                String texts = currentCell.toString();
 
-                            for (String text : texts.split("\n")) {
-                                int length = StringUtil.getWidth(text);
-                                if (columnWidth < length) {
-                                    columnWidth = length;
+                                for (String text : texts.split("\n")) {
+                                    int length = StringUtil.getWidth(text);
+                                    if (columnWidth < length) {
+                                        columnWidth = length;
+                                    }
                                 }
                             }
                         }
                     }
+                    sheet.setColumnWidth(columnIndex, (columnWidth + 1) * 256);
+                } else {//制定了宽度
+                    sheet.setColumnWidth(columnIndex, Math.max(columnWidth, columnParam.getWidth() + 1) * 256);
                 }
-                sheet.setColumnWidth(columnIndex, (columnWidth + 1) * 256);
+
             }
         }
 
@@ -310,6 +325,7 @@ public class ExcelExporter<T> {
 
     /**
      * 将excel传到response里
+     *
      * @param ts
      * @param response
      * @param fileName
@@ -332,6 +348,7 @@ public class ExcelExporter<T> {
 
     /**
      * 将excel传到某个流里,默认是不会关闭流的
+     *
      * @param ts
      * @param outputStream
      * @throws IOException
@@ -354,6 +371,7 @@ public class ExcelExporter<T> {
 
     /**
      * 将excel写入文件
+     *
      * @param ts
      * @param fileName
      * @throws IOException
@@ -370,4 +388,5 @@ public class ExcelExporter<T> {
             workbook.write(outputStream);
         }
     }
+
 }

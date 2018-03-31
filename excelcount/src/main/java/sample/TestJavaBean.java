@@ -33,7 +33,7 @@ public class TestJavaBean {
         return this;
     }
 
-    @ColumnName(value = "title2", order = 10)
+    @ColumnName(value = "title2", order = 10, width = 3)
     public String getData2() {
         return data2;
     }
@@ -66,7 +66,7 @@ public class TestJavaBean {
     }
 
     @ColumnName(value = "date", order = 9)
-    @DateFormat(customFormatType = "yyyy")
+    @DateFormat(customFormatType = "yyyy--MM--dd")
     public Date getDate() {
         return date;
     }
