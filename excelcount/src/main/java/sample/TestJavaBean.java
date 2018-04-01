@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 @TableName("Head")
-@AutoWidth
 public class TestJavaBean {
     private String data1;
     private String data2;

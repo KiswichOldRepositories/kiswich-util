@@ -69,12 +69,17 @@ public class ExcelExporter<T> {
         this.columnParams = new ArrayList<>();
         this.methods = new ArrayList<>();
         TableName tableName = objectType.getAnnotation(TableName.class);
-        AutoWidth isAutoWidth = objectType.getAnnotation(AutoWidth.class);
-        AutoHeight autoHeight = objectType.getAnnotation(AutoHeight.class);
         this.tableHead = tableName.value();
         this.excelType = tableName.type();
+
+        AutoWidth isAutoWidth = objectType.getAnnotation(AutoWidth.class) == null ?
+                TableName.class.getAnnotation(AutoWidth.class) :
+                objectType.getAnnotation(AutoWidth.class);
+        AutoHeight isAutoHeight = objectType.getAnnotation(AutoHeight.class) == null ?
+                TableName.class.getAnnotation(AutoHeight.class) :
+                objectType.getAnnotation(AutoHeight.class);
         if (isAutoWidth != null && isAutoWidth.value()) this.isAutoWidth = true;
-        if (autoHeight != null && autoHeight.value()) this.isAutoHeight = true;
+        if (isAutoHeight != null && isAutoHeight.value()) this.isAutoHeight = true;
 
         for (Method method : objectType.getMethods()) {
             ColumnName columnName = method.getAnnotation(ColumnName.class);
@@ -243,7 +248,7 @@ public class ExcelExporter<T> {
                 }
 
                 //行高自适应（即匹配换行符）【想必时间也只有一行的吧23333】
-                if (this.isAutoHeight && columnParam.getCellType() == excelutil.constant.CellType.INT || columnParam.getCellType() == excelutil.constant.CellType.STRING) {
+                if (this.isAutoHeight && (columnParam.getCellType() == excelutil.constant.CellType.INT || columnParam.getCellType() == excelutil.constant.CellType.STRING)) {
                     Pattern compile = Pattern.compile("\n");
                     Matcher matcher = compile.matcher(cellText);
                     int count = 1;
@@ -251,7 +256,7 @@ public class ExcelExporter<T> {
                         count++;
                     }
                     if (count > rowMaxLine) {//比当前最大的行数还要大
-                        float heightInPoints = sheetRow.getHeightInPoints();
+//                        float heightInPoints = sheetRow.getHeightInPoints();
                         sheetRow.setHeightInPoints((count + 1) * (DATA_FONT_SIZE));
                         rowMaxLine = count;
                     }
