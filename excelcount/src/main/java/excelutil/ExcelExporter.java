@@ -248,7 +248,7 @@ public class ExcelExporter<T> {
                 }
 
                 //行高自适应（即匹配换行符）【想必时间也只有一行的吧23333】
-                if (this.isAutoHeight && (columnParam.getCellType() == excelutil.constant.CellType.INT || columnParam.getCellType() == excelutil.constant.CellType.STRING)) {
+                if (cellText != null && this.isAutoHeight && (columnParam.getCellType() == excelutil.constant.CellType.INT || columnParam.getCellType() == excelutil.constant.CellType.STRING)) {
                     Pattern compile = Pattern.compile("\n");
                     Matcher matcher = compile.matcher(cellText);
                     int count = 1;

@@ -87,8 +87,8 @@ public class TestJavaBean {
         }
 
         ArrayList<TestJavaBean> testJavaBeans = new ArrayList<TestJavaBean>(){{
-            add(new TestJavaBean().setData1("aaa").setData2("bbbbbbbbbbbbb").setData3("sssss").setData4(2).setDate(new Date()));
-            add(new TestJavaBean().setData1("aaa").setData2("bbbbbbbbbbbbb\nccccccccccccc").setData3("sssss\nsss\nss").setData4(1).setDate(new Date()));
+            add(new TestJavaBean().setData1("aaa").setData2("bbbbbbbbbbbbb").setData3(null).setData4(2).setDate(new Date()));
+            add(new TestJavaBean().setData1("aaa").setData2("bbbbbbbbbbbbb\nccccccccccccc").setData3("sssss\nsss\nss").setData4(1).setDate(null));
             add(new TestJavaBean().setData1("aaa").setData2("bbbbbbbbbbbbb\nccccccccccccc").setData3("sssss\nsss\nss").setData4(2).setDate(new Date()));
             add(new TestJavaBean().setData1("aaa").setData2("bbbbbbbbbbbbb\nccccccccccccc").setData3("sssss\nsss\nss").setData4(1).setDate(new Date()));
             add(new TestJavaBean().setData1("aaa").setData2("bbbbbbbbbbbbb\nccccccccccccc").setData3("sssss\nsss\nss").setData4(2).setDate(new Date()));
