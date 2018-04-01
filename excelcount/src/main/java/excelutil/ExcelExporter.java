@@ -235,7 +235,7 @@ public class ExcelExporter<T> {
                     case DATE:
                         cellText = TimeUtil.dateToString(cellCompont, columnParam.getDateFormat());
                         cell.setCellValue(cellText);
-                        cell.setCellStyle(PoiStyleUtil.parseDateStyle(workbook, PoiStyleUtil.getStyle(workbook, (int) DATA_FONT_SIZE), columnParam.getDateFormat()));
+//                        cell.setCellStyle(PoiStyleUtil.parseDateStyle(workbook, PoiStyleUtil.getStyle(workbook, (int) DATA_FONT_SIZE), columnParam.getDateFormat()));
                         break;
                     case INT:
                         cellText = String.valueOf(cellCompont);
