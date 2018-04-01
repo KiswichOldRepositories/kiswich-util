@@ -13,14 +13,14 @@ maven
 <dependency>
     <groupId>top.kiswich</groupId>
     <artifactId>excel-count</artifactId>
-    <version>1.0.0-RELEASE</version>
+    <version>1.0.1.1-RELEASE</version>
 </dependency>
 ```
     
 gradle
 ```
 dependencies {
-    compile 'top.kiswich:excel-count:1.0.0-RELEASE'
+    compile 'top.kiswich:excel-count:1.0.1.1-RELEASE'
 }
 ```
 
