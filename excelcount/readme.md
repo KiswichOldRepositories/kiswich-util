@@ -114,7 +114,11 @@ public class TestJavaBean {
 
 3.通过项目的运用，逐步分析优化点。
 
+    + 对映射类的宽度可以在初始化的时候注入。
+
 4.实现多个sheet的构建，等遇到了这样的需求再考虑吧
+
+5.增加关闭 `@TableName`的功能。
 
 ### UPDATE
 
