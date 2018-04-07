@@ -1,7 +1,6 @@
 package excelutil.util;
 
 import excelutil.constant.DateFormatType;
-import org.junit.Test;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -12,7 +11,7 @@ import java.util.Date;
  * 简单的日期/时间工具类
  * 完成对bean中时间类型的解析和传入
  */
-public class TimeUtil {
+public class TimeHelper {
 
     //检测类型用
     private static Date date = new Date();
@@ -40,7 +39,7 @@ public class TimeUtil {
 
     public static String dateToString(Object date, String dateFormat) {
         String dateString = null;
-        if (StringUtil.isBlank(dateFormat)) dateFormat = DateFormatType.YAER_DATE_TIME.getDateFormatString();
+        if (StringHelper.isBlank(dateFormat)) dateFormat = DateFormatType.YAER_DATE_TIME.getDateFormatString();
         try {
             dateString = dataToString((Date) date, getDateFormat(dateFormat));
         } catch (Exception e) {

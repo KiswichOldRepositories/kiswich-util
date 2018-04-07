@@ -1,7 +1,7 @@
 package sample;
 
 import excelutil.annotation.ColumnName;
-import excelutil.util.StringUtil;
+import excelutil.util.StringHelper;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
@@ -23,8 +23,8 @@ public class TestReflect {
 
         for (Method method : methods1) {
 //            System.out.println("method ： " + method.getName() + " ; returnType + " + method.getReturnType().isInstance(new Date()));
-//            System.out.println("method ： " + method.getName() + " ; returnType + " + TimeUtil.isDateType(method.getReturnType()));
-            System.out.println("method ： " + method.getName() + " ; returnType + " + StringUtil.isIntType(method.getReturnType()));
+//            System.out.println("method ： " + method.getName() + " ; returnType + " + TimeHelper.isDateType(method.getReturnType()));
+            System.out.println("method ： " + method.getName() + " ; returnType + " + StringHelper.isIntType(method.getReturnType()));
 
 //            System.out.println("method ： " + method.getName() + " ; returnType + " +  ((Class)returnType).isInstance(""));
         }

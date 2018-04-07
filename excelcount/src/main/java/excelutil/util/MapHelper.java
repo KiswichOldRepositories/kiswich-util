@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * 用于整形/字符串型的特殊映射的工具
  */
-public class MapUtil {
+public class MapHelper {
 
 
     /**

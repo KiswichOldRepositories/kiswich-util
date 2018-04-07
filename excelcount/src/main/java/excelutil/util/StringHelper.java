@@ -5,7 +5,7 @@ import org.junit.Test;
 /**
  * 简单的string功能
  */
-public class StringUtil {
+public class StringHelper {
     /**
      * 判断是否为空
      * @param charSequence

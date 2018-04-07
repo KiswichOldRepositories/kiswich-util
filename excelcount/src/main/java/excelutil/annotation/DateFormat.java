@@ -6,10 +6,13 @@ import java.lang.annotation.*;
 
 /**
  * 日期的自定义转换形式
+ * @deprecated 因为v1被废弃了。
  */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
+@Deprecated
+
 public @interface DateFormat {
     DateFormatType DATE_FORMAT_TYPE() default DateFormatType.YAER_DATE_TIME;
 

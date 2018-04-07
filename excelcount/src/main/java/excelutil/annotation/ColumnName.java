@@ -5,9 +5,14 @@ import excelutil.constant.CellType;
 
 import java.lang.annotation.*;
 
+/**
+ * @deprecated 使用更贴近语义的 {@link excelutil.annotation.v2.ExcelColumn}
+ */
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
+@Deprecated
+
 public @interface ColumnName {
     //列名
     String value();

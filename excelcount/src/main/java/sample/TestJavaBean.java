@@ -14,6 +14,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Date;
 
+
 @TableName("Head")
 public class TestJavaBean {
     private String data1;

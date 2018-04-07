@@ -9,6 +9,8 @@ import java.util.Map;
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
+@Deprecated
+
 public @interface MapFormats {
     String defaultValue() default "";
 

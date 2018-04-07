@@ -4,18 +4,16 @@ package excelutil;
 import excelutil.Entity.ColumnParam;
 import excelutil.annotation.*;
 import excelutil.constant.DateFormatType;
-import excelutil.constant.ExcelType;
+import excelutil.constant.ExcelSuffix;
 import excelutil.exception.TypeErrorException;
-import excelutil.util.MapUtil;
-import excelutil.util.PoiStyleUtil;
-import excelutil.util.StringUtil;
-import excelutil.util.TimeUtil;
-import org.apache.commons.lang3.StringUtils;
+import excelutil.util.MapHelper;
+import excelutil.util.PoiStyleHelper;
+import excelutil.util.StringHelper;
+import excelutil.util.TimeHelper;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import sun.security.util.Length;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -28,6 +26,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * TODO 注解的读取与解析的OOP
+ * TODO 自适应的高级配置，或可自定义配置
+ *
  * 简化了部分操作的数据库导出工具
  * <p>
  * 原则上，只需要 T tableName tableHead [fileName] ，就可以新建一个excel表
@@ -45,6 +46,7 @@ import java.util.regex.Pattern;
  */
 public class ExcelExporter<T> {
     //和下面的行高适配和列宽适配略有耦合
+    //TODO 默认的可配置项
     private final static float DATA_FONT_SIZE = 10;
     private final static float TITLE_FONT_SIZE = 14;
     private final static float TABLE_FONT_SIZE = 20;
@@ -62,7 +64,7 @@ public class ExcelExporter<T> {
 
     private boolean isAutoWidth = false;
     private boolean isAutoHeight = false;
-    private ExcelType excelType;
+    private ExcelSuffix excelSuffix;
 
     public ExcelExporter(Class<T> objectType) throws TypeErrorException {
         this.objectType = objectType;
@@ -70,7 +72,7 @@ public class ExcelExporter<T> {
         this.methods = new ArrayList<>();
         TableName tableName = objectType.getAnnotation(TableName.class);
         this.tableHead = tableName.value();
-        this.excelType = tableName.type();
+        this.excelSuffix = tableName.type();
 
         AutoWidth isAutoWidth = objectType.getAnnotation(AutoWidth.class) == null ?
                 TableName.class.getAnnotation(AutoWidth.class) :
@@ -123,22 +125,22 @@ public class ExcelExporter<T> {
         int width = columnName.width();
         //确定参数类型
         Class<?> returnType = method.getReturnType();
-        if (StringUtil.isStringType(returnType)) {
+        if (StringHelper.isStringType(returnType)) {
             ColumnParam<String> stringColumnParam = new ColumnParam<>();
             //处理映射
-            stringColumnParam.setMap(MapUtil.parseMap(method.getAnnotation(MapFormats.class)));
+            stringColumnParam.setMap(MapHelper.parseMap(method.getAnnotation(MapFormats.class)));
             stringColumnParam.setCellType(excelutil.constant.CellType.STRING)
                     .setWidth(width);
             return stringColumnParam;
         }
-        if (StringUtil.isIntType(returnType)) {
+        if (StringHelper.isIntType(returnType)) {
             ColumnParam<Integer> integerColumnParam = new ColumnParam<>();
-            integerColumnParam.setMap(MapUtil.parseMap(method.getAnnotation(MapFormats.class)));
+            integerColumnParam.setMap(MapHelper.parseMap(method.getAnnotation(MapFormats.class)));
             integerColumnParam.setCellType(excelutil.constant.CellType.INT)
                     .setWidth(width);
             return integerColumnParam;
         }
-        if (TimeUtil.isDateType(returnType)) {
+        if (TimeHelper.isDateType(returnType)) {
             ColumnParam dateColumnParam = new ColumnParam();
             DateFormat dateFormat = method.getAnnotation(DateFormat.class);
             if (dateFormat == null) {
@@ -150,7 +152,7 @@ public class ExcelExporter<T> {
             dateColumnParam.setCellType(excelutil.constant.CellType.DATE)
                     .setWidth(width);
             //时间属性的宽度是可以通过表达式定下来的
-            if (width == 0) dateColumnParam.setWidth(StringUtil.getWidth(dateColumnParam.getDateFormat()));
+            if (width == 0) dateColumnParam.setWidth(StringHelper.getWidth(dateColumnParam.getDateFormat()));
 
             return dateColumnParam;
         }
@@ -161,7 +163,7 @@ public class ExcelExporter<T> {
         Date date = new Date();
         //1.创建对象
         Workbook workbook;
-        switch (excelType) {
+        switch (excelSuffix) {
             case xls:
                 workbook = new HSSFWorkbook();
                 break;
@@ -169,7 +171,7 @@ public class ExcelExporter<T> {
                 workbook = new XSSFWorkbook();
                 break;
             default:
-                throw new TypeErrorException("error type names " + excelType);
+                throw new TypeErrorException("error type names " + excelSuffix);
         }
         Sheet sheet = workbook.createSheet(this.tableHead);
 
@@ -180,7 +182,7 @@ public class ExcelExporter<T> {
         Cell titleCell = row.createCell(0);
         row.setHeightInPoints(TABLE_TABLE_HEIGHT);
 
-        CellStyle columnTopStyle = PoiStyleUtil.getColumnTopStyle(workbook, (int) TABLE_FONT_SIZE);
+        CellStyle columnTopStyle = PoiStyleHelper.getColumnTopStyle(workbook, (int) TABLE_FONT_SIZE);
 
         sheet.addMergedRegion(new CellRangeAddress(0, 1, 0, size - 1));
         titleCell.setCellStyle(columnTopStyle);
@@ -188,7 +190,7 @@ public class ExcelExporter<T> {
 
         Date date2 = new Date();
         //3.填充列名
-        CellStyle columnTopStyle1 = PoiStyleUtil.getColumnTopStyle(workbook, (int) TITLE_FONT_SIZE);
+        CellStyle columnTopStyle1 = PoiStyleHelper.getColumnTopStyle(workbook, (int) TITLE_FONT_SIZE);
         Row headRow = sheet.createRow(2);
         headRow.setHeightInPoints(TITLE_TABLE_HEIGHT);
         for (int i = 0; i < columnParams.size(); i++) {
@@ -200,7 +202,7 @@ public class ExcelExporter<T> {
             headRowCell.setCellStyle(columnTopStyle1);
         }
 
-        CellStyle style = PoiStyleUtil.getStyle(workbook, (int) DATA_FONT_SIZE);
+        CellStyle style = PoiStyleHelper.getStyle(workbook, (int) DATA_FONT_SIZE);
 
         Date date3 = new Date();
         //4.循环填充数据
@@ -233,9 +235,9 @@ public class ExcelExporter<T> {
 
                         break;
                     case DATE:
-                        cellText = TimeUtil.dateToString(cellCompont, columnParam.getDateFormat());
+                        cellText = TimeHelper.dateToString(cellCompont, columnParam.getDateFormat());
                         cell.setCellValue(cellText);
-//                        cell.setCellStyle(PoiStyleUtil.parseDateStyle(workbook, PoiStyleUtil.getStyle(workbook, (int) DATA_FONT_SIZE), columnParam.getDateFormat()));
+//                        cell.setCellStyle(PoiStyleHelper.parseDateStyle(workbook, PoiStyleHelper.getStyle(workbook, (int) DATA_FONT_SIZE), columnParam.getDateFormat()));
                         break;
                     case INT:
                         cellText = String.valueOf(cellCompont);
@@ -286,7 +288,7 @@ public class ExcelExporter<T> {
                     if (titleRow.getCell(columnIndex) != null) {
                         Cell currentCell = titleRow.getCell(columnIndex);
                         String text = currentCell.toString();
-                        int length = StringUtil.getWidth(text) * 2;
+                        int length = StringHelper.getWidth(text) * 2;
                         if (columnWidth < length) {
                             columnWidth = length;
                         }
@@ -302,7 +304,7 @@ public class ExcelExporter<T> {
                                 String texts = currentCell.toString();
 
                                 for (String text : texts.split("\n")) {
-                                    int length = StringUtil.getWidth(text);
+                                    int length = StringHelper.getWidth(text);
                                     if (columnWidth < length) {
                                         columnWidth = length;
                                     }

@@ -10,7 +10,7 @@ import org.apache.poi.ss.usermodel.*;
 /**
  * 对excel的样式的封装
  */
-public class PoiStyleUtil {
+public class PoiStyleHelper {
     /**
      * 列头单元格样式
      * @param workbook

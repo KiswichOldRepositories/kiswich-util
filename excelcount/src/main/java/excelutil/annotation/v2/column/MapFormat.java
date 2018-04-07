@@ -1,16 +1,12 @@
-package excelutil.annotation;
+package excelutil.annotation.v2.column;
 
 import java.lang.annotation.*;
 
 @Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Deprecated
-
 public @interface MapFormat {
-    //对象中源数据
-    String name();
+    String[] name();
 
-    //需要映射成的数据
-    String value();
+    String[] value();
 }

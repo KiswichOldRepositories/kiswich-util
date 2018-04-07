@@ -1,23 +1,13 @@
 package excelutil.constant;
 
 /**
- * excel
+ * excel的生成类型
  */
 public enum ExcelType {
-    xls("xls"),
-    xlsx("xlsx");
-
-    private String type;
-
-    ExcelType(String type) {
-        this.type = type;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
+    normal,
+    /**
+     * 优化，目前的做法是，超过一定大小的集合注入时，就会放弃自动宽高等样式调整
+     * （不然遍历这些数据将会花费大量时间）
+     */
+    optimization,
 }
