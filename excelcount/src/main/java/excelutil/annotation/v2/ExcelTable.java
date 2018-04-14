@@ -20,4 +20,17 @@ public @interface ExcelTable {
     //表的类型
     ExcelType EXCEL_TYPE() default ExcelType.normal;
 
+    //字体配置
+    float DATA_FONT_SIZE() default 10f;
+
+    float TITLE_FONT_SIZE() default 14f;
+
+    float TABLE_FONT_SIZE() default 20f;
+
+    float DATA_TABLE_HEIGHT() default 20f;
+
+    float TITLE_TABLE_HEIGHT() default 35f;
+
+    float TABLE_TABLE_HEIGHT() default 65f;
+
 }
