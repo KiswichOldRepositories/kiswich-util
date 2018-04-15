@@ -36,7 +36,7 @@ public class MethodService {
         //TODO 构造方法
     }
 
-    
+
     //Builder
     public static class Builder {
         Method method;
